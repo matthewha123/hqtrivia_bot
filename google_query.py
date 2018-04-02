@@ -30,12 +30,16 @@ def analyze_text(sess, resp, answer):
     text = BeautifulSoup(extract, 'html.parser').get_text()
 
     kw_dict = {kw:0 for kw in keywords}
-    count_dict[answer] = kw_dict
+    count_dict[answer] = {'keywords':kw_dict, 'abs':0, 'rel':0}
 
-    #count occurences of keyword for each page associated with a particular answer
-    for w in text.split():
+    #count occurences of keyword for each page associated
+
+    text_list = text.split()
+    for w in text_list:
         if w in keywords:
             kw_dict[w] += 1
+            count_dict[answer]['abs'] += 1
+            count_dict[answer]['rel'] += 1.0/len(text_list)
     print(count_dict)
 
 def get_title(sess, resp, answer):
